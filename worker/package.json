@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "nodemon": "2.0.16",
+    "redis": "4.1.0"
+  },
+  "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "nodemon"
+  },
+  "type": "module"
+}

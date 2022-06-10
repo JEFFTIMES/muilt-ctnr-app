@@ -1,0 +1,4 @@
+post http://localhost:5500/values
+Content-Type: application/json
+
+{"index": 8}
