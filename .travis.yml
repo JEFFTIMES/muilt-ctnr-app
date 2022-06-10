@@ -1,0 +1,42 @@
+# claim privilege
+sudo: require
+
+# declare docker as service
+services:
+  - docker
+
+# build the test version images by using the Dockerfile.dev 
+before_install:
+  - docker build -t jefftimes/mca-client:test -f ./client/Dockerfile.dev ./client
+
+# run the tests to validate the code
+script:
+  - docker run --name mca-client-test -e CI=true jefftimes/mca-client:test npm run test -- --coverage
+
+# build the production images
+after_success:
+  - docker build -t jefftimes/mca-client:prod -f ./client/Dockerfile ./client
+  - docker build -t jefftimes/mca-api-server:prod -f ./api-server/Dockerfile ./api-server
+  - docker build -t jefftimes/mca-worker:prod -f ./worker/Dockerfile ./worker
+  - docker build -t jefftimes/mca-proxy:prod -f ./nginx/Dockerfile ./nginx
+
+  # to login docker CLI to push the images, need typing username and password 
+  # leverage TravisCI variables to protect the docker hub credentials
+  # please goto the project page on TravisCI, toggle 'more option' button and select the setting tab,
+  # the create 2 variables for store docker hub credentials in the 'Environment Variables' section.
+  # DOCKER_ID=your-docker-hub-id
+  # DOCKER_PASSWORD=the-password
+
+  # login docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # push images to docker hub
+  - docker push jefftimes/mca-client:prod 
+  - docker push jefftimes/mca-api-server:prod
+  - docker push jefftimes/mca-worker:prod
+  - docker push jefftimes/mca-proxy:prod
+
+
+
+
+# tell aws EBS to install the application
