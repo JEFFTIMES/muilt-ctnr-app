@@ -33,8 +33,8 @@ after_success:
   # push images to docker hub
   - docker push jefftimes/mca-client:prod 
   - docker push jefftimes/mca-api-server:prod
-  # - docker push jefftimes/mca-worker:prod
-  # - docker push jefftimes/mca-proxy:prod
+  - docker push jefftimes/mca-worker:prod
+  - docker push jefftimes/mca-proxy:prod
 
 
 
