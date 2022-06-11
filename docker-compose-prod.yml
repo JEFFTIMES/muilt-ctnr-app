@@ -1,0 +1,74 @@
+# this docker-compose-prod.yml file is used to build containers on local machine.
+# it builds all the 6 containers to run the application listed the names bellow:
+# 1) postgress
+# 2) redis
+# 3) proxy 
+# 4) api-Server
+# 5) worker
+# 6) client ( the web server )
+
+# the docker-compose.yml file is used by AWS EBS to pull image from docker hub,
+# only images of container 3), 4), 5), 6) are pulled while the application is 
+# deploying to EBS env. the postgress and redis containers are not built, instead, 
+# using RDS and ElastiCache services.
+
+
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:14-alpine
+    environment: 
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=apiserver
+      - POSTGRES_DB=fib_indices
+    ports:
+      - 5432:5432
+  
+  redis:
+    image: redis:6.0-alpine
+    ports:
+      - 6379:6379
+
+  proxy:
+    restart: always
+    depends_on:
+      - client
+      - api-server
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports: 
+      - 80:80
+  
+  api-server:
+    build: 
+      dockerfile: Dockerfile
+      context: ./api-server
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGDATABASE=fib_indices
+      - PGUSER=apiserver
+      - PGPASSWORD=password
+    ports:
+      - 5500:5500
+  
+  worker:
+    build: 
+      dockerfile: Dockerfile
+      context: ./worker
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    ports:
+      - 3000:3000
+    
