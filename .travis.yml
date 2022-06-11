@@ -40,3 +40,14 @@ after_success:
 
 
 # tell aws EBS to install the application
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "multi-ctnr-app"
+  env: "Multictnrapp-env"
+  bucket_name: "elasticbeanstalk-us-west-2-499805063381"
+  bucket_path: "multi-ctnr-app"
+  on: 
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

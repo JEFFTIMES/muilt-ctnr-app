@@ -14,7 +14,6 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 6. Click Create Application
 7. You may need to refresh, but eventually, you should see a green checkmark underneath Health.
 
-
 ## RDS Database Creation
 
 1. Go to AWS Management Console and use Find Services to search for RDS
@@ -32,7 +31,6 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 13. Set Initial database name to ***fib_indices***.
 14. Scroll down and click Create Database button
 
-
 ## ElastiCache Redis Creation
 
 1. Go to AWS Management Console and use Find Services to search for ElastiCache
@@ -43,7 +41,6 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 6. Change Node type to 'cache.t2.micro'
 7. Change **Replicas per Shard** to ***0***
 8. Scroll down and click Create button
-
 
 ## Creating a Custom Security Group
 
@@ -60,7 +57,6 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 11. Click in the box next to Source and start typing 'sg' into the box. Select the Security Group you just created.
 12. Click the Save rules button
 
-
 ## Applying Security Groups to ElastiCache
 
 1. Go to AWS Management Console and use Find Services to search for ElastiCache
@@ -71,7 +67,6 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 6. Tick the box next to the new multi-ctnr-app-redis group and click Save
 7. Click Modify
 
-
 ## Applying Security Groups to RDS
 
 1. Go to AWS Management Console and use Find Services to search for RDS
@@ -81,19 +76,16 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 5. Scroll down and click the Continue button
 6. Click Modify DB instance button
 
-
 ## Applying Security Groups to Elastic Beanstalk
 
 1. Go to AWS Management Console and use Find Services to search for Elastic Beanstalk
 2. Click Environments in the left sidebar.
-3. Click Multi-ctnr-app-linux2-env
+3. Click Multictnrapp-env
 4. Click Configuration
 5. In the Instances row, click the Edit button.
 6. Scroll down to EC2 Security Groups and tick box next to ***multi-ctnr-app-sg***
 7. Click Apply and Click Confirm
 8. After all the instances restart and go from No Data to Severe, you should see a green checkmark under Health.
-
-
 
 ## Add AWS configuration details to .travis.yml file's deploy script
 
@@ -102,12 +94,10 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 2. app should be set to the EBS Application Name
    eg: 'multi-ctnr-app'
 3. env should be set to your EBS Environment name.
-   eg: 'Multi-ctnr-app-linux2-env'
-
+   eg: 'Multictnrapp-env'
 4. Set the bucket_name. This can be found by searching for the S3 Storage service. Click the link for the elasticbeanstalk bucket that matches your region code and copy the name.
 
-    eg: 'elasticbeanstalk-us-east-1-923445599289'
-
+   eg: 'elasticbeanstalk-us-east-1-923445599289'
 5. Set the bucket_path to 'multi-ctnr-app'
 6. Set access_key_id to $AWS_ACCESS_KEY
 7. Set secret_access_key to $AWS_SECRET_KEY
@@ -116,7 +106,7 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 
 1. Go to AWS Management Console and use Find Services to search for Elastic Beanstalk
 2. Click Environments in the left sidebar.
-3. Click Multi-ctnr-app-linux2-env
+3. Click Multictnrapp-env
 4. Click Configuration
 5. In the Software row, click the Edit button
 6. Scroll down to Environment properties
@@ -131,8 +121,6 @@ This lecture note is not intended to be a replacement for the videos, but to ser
 15. Set PGPORT to 5432
 16. Click Apply button
 17. After all instances restart and go from No Data, to Severe, you should see a green checkmark under Health.
-
-
 
 ## IAM Keys for Deployment
 
@@ -153,8 +141,6 @@ You can create a new IAM user for this application:
 12. Click "Create user"
 13. Copy and / or download the Access Key ID and Secret Access Key to use in the Travis Variable Setup.
 
-
-
 ## AWS Keys in Travis
 
 1. Go to your Travis Dashboard and find the project repository for the application we are working on.
@@ -170,8 +156,6 @@ You can create a new IAM user for this application:
 	git commit -m “testing deployment"
 	git push origin master
 ```
-
-
 
 8. Go to your Travis Dashboard and check the status of your build.
 9. The status should eventually return with a green checkmark and show "build passing"
